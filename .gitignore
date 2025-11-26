@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+/tmp/
+
+# Cache
+/jellyseerr_cache/
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config (sensitive)
+config_local.py
