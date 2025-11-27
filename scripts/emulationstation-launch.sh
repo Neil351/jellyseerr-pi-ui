@@ -8,8 +8,14 @@ cd "$(dirname "$0")/.."
 # Kill EmulationStation to free the framebuffer
 killall emulationstation
 
-# Wait for ES to fully exit
-sleep 1
+# Wait longer for ES to fully exit and release framebuffer
+sleep 3
+
+# Double-check ES is gone
+while pgrep emulationstation > /dev/null; do
+    echo "Waiting for EmulationStation to exit..."
+    sleep 1
+done
 
 # Set SDL to use framebuffer
 export SDL_VIDEODRIVER=fbcon
