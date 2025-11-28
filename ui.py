@@ -285,8 +285,12 @@ class JellyseerrUI:
 
             # D-pad (hat) navigation
             elif event.type == pygame.JOYHATMOTION:
+                logger.debug(f"D-pad event received: {event.value}")
                 if self.can_navigate():
+                    logger.debug(f"D-pad event handling: {event.value}")
                     self.handle_dpad_motion(event.value)
+                else:
+                    logger.debug("D-pad blocked by nav delay")
 
             # Keyboard fallback for testing
             elif event.type == pygame.KEYDOWN:
@@ -299,6 +303,7 @@ class JellyseerrUI:
     def handle_dpad_motion(self, value: Tuple[int, int]):
         """Handle D-pad (hat) motion"""
         x, y = value
+        logger.debug(f"handle_dpad_motion called: x={x}, y={y}, screen={self.current_screen}")
 
         if self.current_screen == "keyboard":
             # 2D navigation on keyboard
