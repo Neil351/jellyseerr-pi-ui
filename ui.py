@@ -393,30 +393,39 @@ class JellyseerrUI:
 
     def handle_analog_navigation(self):
         """Handle analog stick navigation"""
-        if not self.joystick or not self.can_navigate():
+        if not self.joystick:
             return
 
         # Get axes
         y_axis = self.joystick.get_axis(1)
         x_axis = self.joystick.get_axis(0)
 
-        # Keyboard screen uses 2D navigation
+        # Only check nav delay if stick is actually moved past deadzone
+        # This prevents analog polling from blocking D-pad events
         if self.current_screen == "keyboard":
-            if abs(y_axis) > config.CONTROLLER_DEADZONE:
-                if y_axis < 0:  # Up
-                    self.keyboard_row = max(0, self.keyboard_row - 1)
-                else:  # Down
-                    self.keyboard_row = min(len(self.keyboard_layout) - 1, self.keyboard_row + 1)
+            # Check if any axis is moved
+            if abs(y_axis) > config.CONTROLLER_DEADZONE or abs(x_axis) > config.CONTROLLER_DEADZONE:
+                if not self.can_navigate():
+                    return
 
-            if abs(x_axis) > config.CONTROLLER_DEADZONE:
-                if x_axis < 0:  # Left
-                    self.keyboard_col = max(0, self.keyboard_col - 1)
-                else:  # Right
-                    max_col = len(self.keyboard_layout[self.keyboard_row]) - 1
-                    self.keyboard_col = min(max_col, self.keyboard_col + 1)
+                if abs(y_axis) > config.CONTROLLER_DEADZONE:
+                    if y_axis < 0:  # Up
+                        self.keyboard_row = max(0, self.keyboard_row - 1)
+                    else:  # Down
+                        self.keyboard_row = min(len(self.keyboard_layout) - 1, self.keyboard_row + 1)
+
+                if abs(x_axis) > config.CONTROLLER_DEADZONE:
+                    if x_axis < 0:  # Left
+                        self.keyboard_col = max(0, self.keyboard_col - 1)
+                    else:  # Right
+                        max_col = len(self.keyboard_layout[self.keyboard_row]) - 1
+                        self.keyboard_col = min(max_col, self.keyboard_col + 1)
         else:
-            # Normal vertical navigation
+            # Normal vertical navigation - only check nav delay if stick moved
             if abs(y_axis) > config.CONTROLLER_DEADZONE:
+                if not self.can_navigate():
+                    return
+
                 if y_axis < 0:  # Up
                     self.navigate(-1)
                 else:  # Down
