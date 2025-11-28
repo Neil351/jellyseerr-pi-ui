@@ -419,7 +419,18 @@ class JellyseerrUI:
 
     def navigate(self, direction: int):
         """Navigate menu items with safe boundary checking"""
-        if not self.menu_items:
+        # Determine which list to use based on current screen
+        if self.current_screen == "main_menu":
+            items = self.menu_items
+        elif self.current_screen == "search_results":
+            items = self.search_results
+        elif self.current_screen == "browse":
+            items = self.browse_results
+        else:
+            # For other screens (keyboard, media_detail), no list navigation
+            return
+
+        if not items:
             self.selected_index = 0
             return
 
@@ -430,8 +441,8 @@ class JellyseerrUI:
 
         # Wrap around with explicit bounds checking
         if new_index < 0:
-            new_index = len(self.menu_items) - 1
-        elif new_index >= len(self.menu_items):
+            new_index = len(items) - 1
+        elif new_index >= len(items):
             new_index = 0
 
         self.selected_index = new_index
