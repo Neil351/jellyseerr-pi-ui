@@ -33,7 +33,7 @@ FONT_SIZE_NORMAL = 42
 FONT_SIZE_SMALL = 32
 
 # Controller Settings
-CONTROLLER_DEADZONE = 0.3
+CONTROLLER_DEADZONE = 0.35  # Increased to prevent stick drift triggering navigation
 
 # Controller profiles for different controller types
 CONTROLLER_PROFILES = {
@@ -102,7 +102,7 @@ BUTTON_Y = CONTROLLER_PROFILES[CONTROLLER_PROFILE]['Y']
 BUTTON_START = CONTROLLER_PROFILES[CONTROLLER_PROFILE]['START']
 
 # Navigation timing (prevent too-fast inputs)
-NAV_DELAY = 0.2  # seconds between navigation inputs
+NAV_DELAY = 0.15  # seconds between navigation inputs (reduced for better responsiveness)
 
 # API Settings
 API_TIMEOUT = 10  # seconds
